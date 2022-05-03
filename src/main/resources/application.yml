@@ -13,3 +13,6 @@ spring:
     password: root
     driver-class-name: org.h2.Driver
 
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
