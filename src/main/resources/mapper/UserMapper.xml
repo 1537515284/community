@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ls.community.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.ls.community.model.User">
+            <id property="id" column="ID" jdbcType="INTEGER"/>
+            <result property="accountId" column="ACCOUNT_ID" jdbcType="VARCHAR"/>
+            <result property="name" column="NAME" jdbcType="VARCHAR"/>
+            <result property="token" column="TOKEN" jdbcType="CHAR"/>
+            <result property="gmtCreate" column="GMT_CREATE" jdbcType="BIGINT"/>
+            <result property="gmtModified" column="GMT_MODIFIED" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,ACCOUNT_ID,NAME,
+        TOKEN,GMT_CREATE,GMT_MODIFIED
+    </sql>
+</mapper>
