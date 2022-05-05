@@ -1,5 +1,6 @@
 package com.ls.community.controller;
 
+import com.ls.community.dto.PaginationDTO;
 import com.ls.community.dto.QuestionDTO;
 import com.ls.community.mapper.QuestionMapper;
 import com.ls.community.mapper.UserMapper;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +30,9 @@ public class IndexController {
     @GetMapping("/")
     public String index(
             HttpServletRequest request,
-            Model model
+            Model model,
+            @RequestParam(value = "page",defaultValue = "1") Integer pageNo,
+            @RequestParam(value = "size",defaultValue = "5") Integer pageSize
     ){
         Cookie[] cookies = request.getCookies();
         if(cookies != null) {   // 防止浏览器禁用cookie，而出现空指针异常
@@ -44,8 +48,8 @@ public class IndexController {
             }
         }
 
-        List<QuestionDTO> questionList = questionService.list();
-        model.addAttribute("questions",questionList);
+        PaginationDTO pagination = questionService.list(pageNo,pageSize);
+        model.addAttribute("pagination",pagination);
         return "index";
     }
 }
