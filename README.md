@@ -35,3 +35,4 @@
 ### DAY04
 * Flyway 数据库迁移工具
 * lombok
+* 热部署
