@@ -31,21 +31,7 @@ public class ProfileController {
             @RequestParam(value = "page",defaultValue = "1") Integer page,
             @RequestParam(value = "size",defaultValue = "5") Integer size) {
 
-        User user = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {   // 防止浏览器禁用cookie，而出现空指针异常
-            for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) {
-                    String token = cookie.getValue();
-                    user = userMapper.findByToken(token);
-                    if (user != null) {
-                        request.getSession().setAttribute("user", user);
-                    }
-                    break;
-                }
-            }
-        }
-
+        User user = (User) request.getSession().getAttribute("user");
         if(user == null){
             model.addAttribute("error","用户未登录");
             return "redirect:/";
