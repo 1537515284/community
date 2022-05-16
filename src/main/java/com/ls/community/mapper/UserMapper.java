@@ -1,10 +1,7 @@
 package com.ls.community.mapper;
 
 import com.ls.community.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 /**
 * @author LS
@@ -23,6 +20,12 @@ public interface UserMapper {
 
     @Select("SELECT * FROM user WHERE id = #{id}")
     User findById(@Param("id") Integer id);
+
+    @Select("SELECT * FROM user WHERE account_id = #{accountId}")
+    User findByAccountId(@Param("accountId") String accountId);
+
+    @Update("UPDATE user SET name = #{name},token=#{token},gmt_modified=#{gmtModified},avatar_url=#{avatarUrl}")
+    void update(User user);
 }
 
 

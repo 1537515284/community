@@ -1,10 +1,7 @@
 package com.ls.community.mapper;
 
 import com.ls.community.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -34,6 +31,9 @@ public interface QuestionMapper {
 
     @Select("SELECT * FROM question WHERE id = #{id}")
     Question findById(Integer id);
+
+    @Update("UPDATE question SET title = #{title},description=#{description},gmt_modified=#{gmtModified},tag=#{tag} WHERE id = #{id}")
+    void update(Question question);
 }
 
 
