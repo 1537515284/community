@@ -2,7 +2,6 @@ package com.ls.community.controller;
 
 import com.ls.community.dto.AccessTokenDTO;
 import com.ls.community.dto.GithubUser;
-import com.ls.community.mapper.UserMapper;
 import com.ls.community.model.User;
 import com.ls.community.provider.GithubProvider;
 import com.ls.community.service.UserService;

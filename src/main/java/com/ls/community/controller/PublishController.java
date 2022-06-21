@@ -1,7 +1,6 @@
 package com.ls.community.controller;
 
 import com.ls.community.dto.QuestionDTO;
-import com.ls.community.mapper.QuestionMapper;
 import com.ls.community.mapper.UserMapper;
 import com.ls.community.model.Question;
 import com.ls.community.model.User;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
