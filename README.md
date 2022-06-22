@@ -43,3 +43,6 @@
 
 ### DAY06
 * Mybatis Generator
+
+### DAY07
+* ExceptionHandle
