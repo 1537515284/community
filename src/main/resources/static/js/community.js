@@ -1,6 +1,3 @@
-/**
- * Created by codedrinker on 2019/6/1.
- */
 
 /**
  * 提交回复
@@ -33,9 +30,9 @@ function comment2target(targetId, type, content) {
                 if (response.code == 2003) {
                     var isAccepted = confirm(response.message);
                     if (isAccepted) {
-                        $('#myModal').modal({});
-                        // window.open("https://github.com/login/oauth/authorize?client_id=7f316909bf70d1eaa2b2&redirect_uri=" + document.location.origin + "/callback&scope=user&state=1");
-                        // window.localStorage.setItem("closable", true);
+                        // $('#myModal').modal({});
+                        window.open("https://github.com/login/oauth/authorize?client_id=Iv1.0a2d489403875473&redirect_uri=" + document.location.origin + "/callback&scope=user&state=1");
+                        window.localStorage.setItem("closable", true);
                     }
                 } else {
                     alert(response.message);
