@@ -1,6 +1,7 @@
 package com.ls.community.service;
 
 import com.ls.community.dto.CommentDTO;
+import com.ls.community.dto.QuestionDTO;
 import com.ls.community.enums.CommentTypeEnum;
 import com.ls.community.exception.CustomizeErrorCode;
 import com.ls.community.exception.CustomizeException;
@@ -10,11 +11,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -113,4 +112,6 @@ public class CommentService {
 
         return commentDTOS;
     }
+
+
 }
