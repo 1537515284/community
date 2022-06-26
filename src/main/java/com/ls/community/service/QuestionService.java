@@ -162,7 +162,9 @@ public class QuestionService {
         if(StringUtils.isEmpty(queryDTO.getTag())){
             return new ArrayList<>();
         }
-        String[] tags = StringUtils.split(queryDTO.getTag(), ",");
+//        String[] tags = StringUtils.split(queryDTO.getTag(), ",");
+//        String[] tags = org.thymeleaf.util.StringUtils.split(queryDTO.getTag(), ",");
+        String[] tags = queryDTO.getTag().split(",");
         String regexpTag = Arrays
                 .stream(tags)
                 .filter(StringUtils::hasLength)
