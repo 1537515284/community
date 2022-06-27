@@ -1,6 +1,7 @@
 package com.ls.community.advice;
 
 import com.alibaba.fastjson.JSON;
+import com.ls.community.dto.FileDTO;
 import com.ls.community.dto.ResultDTO;
 import com.ls.community.exception.CustomizeErrorCode;
 import com.ls.community.exception.CustomizeException;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +22,15 @@ import java.io.PrintWriter;
 @Slf4j
 @ControllerAdvice
 public class CustomizeExceptionHandler {
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    @ResponseBody
+    FileDTO fileHandle(Exception ex,HttpServletRequest request){
+        FileDTO fileDTO = new FileDTO();
+        fileDTO.setSuccess(0);
+        fileDTO.setMessage("文件大小超出限制");
+        return fileDTO;
+    }
 
     @ExceptionHandler(Exception.class)
     ModelAndView handle(Throwable e, Model model, HttpServletRequest request, HttpServletResponse response) {

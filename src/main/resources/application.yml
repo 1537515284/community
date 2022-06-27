@@ -12,6 +12,11 @@ spring:
     username: root
     password: root
     driver-class-name: org.h2.Driver
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 2MB
+      max-request-size: 100MB
 
 mybatis:
   configuration:
@@ -19,3 +24,9 @@ mybatis:
     map-underscore-to-camel-case: true
   mapper-locations: classpath:mapper/*.xml
 #  type-aliases-package: com.ls.community.model
+
+qiniuyun:
+  accessKey: _3PM93n1Hw69y92DsL7lXkINPO6itnGq68Ka1Qy9
+  secretKey: cz6jsXegkIoIR_9DwpWl8IMuRA3qppYN4adhGPAs
+  bucket: community-storage
+  domain: http://re2uz7udr.hd-bkt.clouddn.com/

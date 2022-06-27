@@ -3,14 +3,17 @@ package com.ls.community.interceptor;
 import com.ls.community.mapper.UserMapper;
 import com.ls.community.model.User;
 import com.ls.community.model.UserExample;
+import com.ls.community.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -19,19 +22,25 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie[] cookies = request.getCookies();
-        if(cookies != null) {   // 防止浏览器禁用cookie，而出现空指针异常
+        if(cookies != null && cookies.length != 0) {   // 防止浏览器禁用cookie，而出现空指针异常
             for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) {
+                if ("token".equals(cookie.getName()) && StringUtils.hasLength(cookie.getValue())) {
                     String token = cookie.getValue();
                     UserExample example = new UserExample();
                     example.createCriteria()
                                     .andTokenEqualTo(token);
                     List<User> users = userMapper.selectByExample(example);
                     if (users.size() != 0) {
-                        request.getSession().setAttribute("user", users.get(0));
+                        HttpSession session = request.getSession();
+                        session.setAttribute("user", users.get(0));
+                        Long unreadCount = notificationService.unreadCount(users.get(0).getId());
+                        session.setAttribute("unreadCount", unreadCount);
                     }
                     break;
                 }
