@@ -23,10 +23,12 @@ public class IndexController {
             HttpServletRequest request,
             Model model,
             @RequestParam(value = "page",defaultValue = "1") Integer pageNo,
-            @RequestParam(value = "size",defaultValue = "5") Integer pageSize
+            @RequestParam(value = "size",defaultValue = "5") Integer pageSize,
+            @RequestParam(value = "search",required = false) String search
     ){
-        PaginationDTO pagination = questionService.list(pageNo,pageSize);
+        PaginationDTO pagination = questionService.list(search,pageNo,pageSize);
         model.addAttribute("pagination",pagination);
+        model.addAttribute("search",search);
         return "index";
     }
 }

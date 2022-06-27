@@ -40,4 +40,27 @@
         order by gmt_create desc limit 20
     </select>
 
+    <select id="countBySearch" parameterType="com.ls.community.dto.QuestionQueryDTO"
+            resultType="java.lang.Integer">
+        select count(*) from question
+        <where>
+            <if test="search != null and search != ''">
+                and title regexp #{search}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectBySearch" resultType="com.ls.community.model.Question">
+        select * from question
+        <where>
+            <if test="search != null and search != ''">
+                and title regexp #{search}
+            </if>
+        </where>
+        <if test="sort == null or sort == ''">
+            order by gmt_create desc
+        </if>
+        limit #{page},#{size}
+    </select>
+
 </mapper>

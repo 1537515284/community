@@ -2,6 +2,7 @@ package com.ls.community.service;
 
 import com.ls.community.dto.PaginationDTO;
 import com.ls.community.dto.QuestionDTO;
+import com.ls.community.dto.QuestionQueryDTO;
 import com.ls.community.exception.CustomizeErrorCode;
 import com.ls.community.exception.CustomizeException;
 import com.ls.community.mapper.QuestionExtMapper;
@@ -33,17 +34,32 @@ public class QuestionService {
     @Autowired
     private UserMapper userMapper;
 
-    public PaginationDTO list(Integer page, Integer pageSize) {
+    public PaginationDTO list(String search, Integer page, Integer size) {
+
+        if(StringUtils.hasLength(search)){
+            String[] tags = search.split(" ");
+            search = Arrays
+                    .stream(tags)
+                    .filter(StringUtils::hasLength)
+                    .map(t -> t.replace("+","").replace("*","").replace("?",""))
+                    .filter(StringUtils::hasLength)
+                    .collect(Collectors.joining("|"));
+        }
+
 
         PaginationDTO paginationDTO = new PaginationDTO<>();
         int totalPage;
-        Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());
+
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setSearch(search);
+
+        Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
 
 
-        if(totalCount % pageSize == 0){
-            totalPage = totalCount/pageSize;
+        if(totalCount % size == 0){
+            totalPage = totalCount/ size;
         }else {
-            totalPage = totalCount/pageSize+1;
+            totalPage = totalCount/ size +1;
         }
 
         if(page < 1)
@@ -52,23 +68,21 @@ public class QuestionService {
             page = totalPage;
 
         paginationDTO.setPagination(totalPage,page);
-
-        Integer offset = pageSize *(page-1);
-
-        QuestionExample example = new QuestionExample();
-        example.setOrderByClause("gmt_create desc");
-        List<Question> questionList = questionMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, pageSize));
+        Integer offset = size *(page-1);
+        questionQueryDTO.setSize(size);
+        questionQueryDTO.setPage(offset);
+        List<Question> questions = questionExtMapper.selectBySearch(questionQueryDTO);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
-        for (Question question : questionList) {
+        for (Question question : questions) {
              User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
+            questionDTO.setDescription("");
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
         paginationDTO.setData(questionDTOList);
-
         return paginationDTO;
     }
 
