@@ -20,10 +20,14 @@ spring:
 
 mybatis:
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
   mapper-locations: classpath:mapper/*.xml
 #  type-aliases-package: com.ls.community.model
+
+#logging:
+#  level:
+#    com.ls.community.mapper: DEBUG
 
 qiniuyun:
   accessKey: _3PM93n1Hw69y92DsL7lXkINPO6itnGq68Ka1Qy9
