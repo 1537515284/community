@@ -89,7 +89,7 @@
     </logger>
     <!-- 显示形成的sql、使用的参数、结果集 -->
 <!--    <logger name="java.sql" level="debug" />-->
-    <logger name="org.springframework.jdbc" level="debug" />
+<!--    <logger name="org.springframework.jdbc" level="debug" />-->
 
     <!-- 系统模块日志级别控制  -->
     <logger name="com.platform" level="info" />
@@ -97,11 +97,11 @@
     <logger name="org.springframework" level="warn" />
 
     <!-- 开发环节才输出控制台日志 -->
-    <!--  <springProfile name="dev"> -->
+    <springProfile name="dev">
     <root level="info">
         <appender-ref ref="console" />
     </root>
-    <!--     </springProfile> -->
+    </springProfile>
 
     <!--系统操作日志-->
     <root level="info">
