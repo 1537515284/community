@@ -34,7 +34,7 @@ public class QuestionService {
     @Autowired
     private UserMapper userMapper;
 
-    public PaginationDTO list(String search, Integer page, Integer size) {
+    public PaginationDTO list(String search, String tag,Integer page, Integer size) {
 
         if(StringUtils.hasLength(search)){
             String[] tags = search.split(" ");
@@ -52,6 +52,10 @@ public class QuestionService {
 
         QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
         questionQueryDTO.setSearch(search);
+        if(StringUtils.hasLength(tag)){
+            tag = tag.replace("+","").replace("*","").replace("?","");
+            questionQueryDTO.setTag(tag);
+        }
 
         Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
 
