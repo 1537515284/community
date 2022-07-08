@@ -1,10 +1,14 @@
 package com.ls.community.interceptor;
 
+import com.ls.community.enums.AdPosEnum;
 import com.ls.community.mapper.UserMapper;
+import com.ls.community.model.Ad;
 import com.ls.community.model.User;
 import com.ls.community.model.UserExample;
+import com.ls.community.service.AdService;
 import com.ls.community.service.NavService;
 import com.ls.community.service.NotificationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -17,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+@Slf4j
 @Service
 public class SessionInterceptor implements HandlerInterceptor {
 
@@ -27,14 +32,15 @@ public class SessionInterceptor implements HandlerInterceptor {
     private NotificationService notificationService;
 
     @Autowired
-    private NavService navService;
+    private AdService adService;
 
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // 导航栏
-        request.getServletContext().setAttribute("navs",navService.list());
-
+        // 没有登录的时候也可以查看导航
+        for (AdPosEnum adPos : AdPosEnum.values()) {
+            request.getServletContext().setAttribute(adPos.name(), adService.list(adPos.name()));
+        }
         Cookie[] cookies = request.getCookies();
         if(cookies != null && cookies.length != 0) {   // 防止浏览器禁用cookie，而出现空指针异常
             for (Cookie cookie : cookies) {

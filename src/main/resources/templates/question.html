@@ -12,40 +12,64 @@
     <div class="row">
         <!--左边主要内容-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-
-            <h4><span th:text="${question.title}"></span></h4>
-            <span class="text-desc">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4><span th:text="${question.title}"></span></h4>
+                <span class="text-desc">
                 作者：<span th:text="${question.user.name}"></span> |
                 发布时间：<span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span> |
                 阅读数： <span th:text="${question.viewCount}"></span>
             </span>
-            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-            <!--内容-->
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="question-view">
-                <textarea style="display:none;" th:text="${question.description}"></textarea>
-            </div>
-            <script type="text/javascript">
-                $(function () {
-                    editormd.markdownToHTML("question-view", {});
-                });
-            </script>
+                <!--内容-->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="question-view">
+                    <textarea style="display:none;" th:text="${question.description}"></textarea>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        editormd.markdownToHTML("question-view", {});
+                    });
+                </script>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                     th:if="${!#lists.isEmpty(#httpServletRequest.getServletContext().getAttribute('FOOTER'))}"
+                     th:each="ad : ${#httpServletRequest.getServletContext().getAttribute('FOOTER')}">
+                    <a th:href="${ad.url}"target="_blank"
+                       style="color: #A00;font-weight: bold;">
+                        <img class="img-responsive" th:src="${ad.image}" th:alt="${ad.title}">
+                    </a>
 
-            <!--标签-->
-            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="width: 100%;"
+                     th:if="${#lists.isEmpty(#httpServletRequest.getServletContext().getAttribute('FOOTER'))}">
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- 页尾广告 -->
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-9804684553882114"
+                         data-ad-slot="4772323686"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+                <!--标签-->
+                <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <span class="question-tag" th:each="tag : ${question.tag.split(',')}">
                         <a th:href="@{/(page=1,tag=${tag})}"
                            th:text="${tag}" class="community-tag"></a>
                     </span>
+                </div>
+
+                <!--编辑-->
+                <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <a th:href="@{/publish/{id}(id=${question.id})}" class="community-menu"
+                   th:if="${session.user != null && session.user.id == question.creator}">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑</span>
+                </a>
             </div>
 
-            <!--编辑-->
-            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <a th:href="@{/publish/{id}(id=${question.id})}" class="community-menu"
-               th:if="${session.user != null && session.user.id == question.creator}">
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑</span>
-            </a>
 
             <!--回复-->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -138,6 +162,7 @@
                 </div>
             </div>
             <div th:insert="~{notice :: notice}"></div>
+            <div th:insert="~{side::side}"></div>
             <!--相关问题-->
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
