@@ -35,10 +35,10 @@
             <id>mysql</id>
             <properties>
                 <evn>mysql</evn>
-                <db.url>jdbc:mysql://127.0.0.1:3306/community?&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</db.url>
+                <db.url>jdbc:mysql://127.0.0.1:3306/community</db.url>
                 <db.user>root</db.user>
                 <db.password>root</db.password>
-                <db.driver>com.mysql.cj.jdbc.Driver</db.driver>
+                <db.driver>com.mysql.jdbc.Driver</db.driver>
             </properties>
         </profile>
     </profiles>
@@ -87,6 +87,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.36</version>
         </dependency>
 
         <dependency>
@@ -175,7 +176,7 @@
                     <dependency>
                         <groupId>mysql</groupId>
                         <artifactId>mysql-connector-java</artifactId>
-                        <version>8.0.15</version>
+                        <version>5.1.36</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -196,7 +197,7 @@
                     <dependency>
                         <groupId>mysql</groupId>
                         <artifactId>mysql-connector-java</artifactId>
-                        <version>8.0.15</version>
+                        <version>5.1.36</version>
                     </dependency>
                 </dependencies>
             </plugin>

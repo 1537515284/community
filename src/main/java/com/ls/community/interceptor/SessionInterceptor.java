@@ -3,6 +3,7 @@ package com.ls.community.interceptor;
 import com.ls.community.mapper.UserMapper;
 import com.ls.community.model.User;
 import com.ls.community.model.UserExample;
+import com.ls.community.service.NavService;
 import com.ls.community.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,15 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private NavService navService;
+
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // 导航栏
+        request.getServletContext().setAttribute("navs",navService.list());
+
         Cookie[] cookies = request.getCookies();
         if(cookies != null && cookies.length != 0) {   // 防止浏览器禁用cookie，而出现空指针异常
             for (Cookie cookie : cookies) {

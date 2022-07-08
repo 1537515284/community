@@ -22,7 +22,8 @@ public class HotTagTasks {
     @Autowired
     private HotTagCache hotTagCache;
 
-    @Scheduled(fixedRate = 1000 * 30)
+    // 每小时执行一次
+    @Scheduled(fixedRate = 1000 * 60 * 60)
     public void hotTagSchedule(){
         int offset = 0;
         int limit = 20;
