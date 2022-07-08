@@ -1,5 +1,6 @@
 package com.ls.community.service;
 
+import com.ls.community.cache.QuestionCache;
 import com.ls.community.dto.PaginationDTO;
 import com.ls.community.dto.QuestionDTO;
 import com.ls.community.dto.QuestionQueryDTO;
@@ -34,6 +35,9 @@ public class QuestionService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private QuestionCache questionCache;
 
     public PaginationDTO list(String search, String tag, String sort, Integer page, Integer size) {
 
@@ -101,6 +105,10 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
+        List<QuestionDTO> stickies = questionCache.getStickies();
+        if(stickies != null && stickies.size() != 0){
+            questionDTOList.addAll(0,stickies);
+        }
         paginationDTO.setData(questionDTOList);
         return paginationDTO;
     }
@@ -143,6 +151,7 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
+
         paginationDTO.setData(questionDTOList);
         return paginationDTO;
     }
@@ -166,6 +175,7 @@ public class QuestionService {
             question.setViewCount(0);
             question.setLikeCount(0);
             question.setCommentCount(0);
+            question.setSticky(0);
             questionMapper.insert(question);
         }else {
             // 更新

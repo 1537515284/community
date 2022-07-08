@@ -27,4 +27,6 @@ public class QuestionDTO {
     private String tag;
 
     private User user;
+
+    private Integer sticky;
 }
