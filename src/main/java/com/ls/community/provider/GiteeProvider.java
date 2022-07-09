@@ -1,63 +1,60 @@
 package com.ls.community.provider;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ls.community.dto.AccessTokenDTO;
-import com.ls.community.provider.dto.GithubUser;
+import com.ls.community.provider.dto.GiteeUser;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
 @Component
 @Slf4j
-public class GithubProvider {
+public class GiteeProvider {
 
-
-    @Value("${github.client.id}")
+    @Value("${gitee.client.id}")
     private String clientId;
 
-    @Value("${github.client.secret}")
+    @Value("${gitee.client.secret}")
     private String clientSecret;
 
-    @Value("${github.redirect-uri}")
+    @Value("${gitee.redirect-uri}")
     private String redirectUri;
 
     public String getAccessToken(AccessTokenDTO accessTokenDTO){
-        accessTokenDTO.setClient_id(clientId);
-        accessTokenDTO.setClient_secret(clientSecret);
-        accessTokenDTO.setRedirect_uri(redirectUri);
         MediaType mediaType = MediaType.get("application/json;charset=utf-8");
         OkHttpClient client = new OkHttpClient();
 
         RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDTO));
+        String url = "https://gitee.com/oauth/token?grant_type=authorization_code&code=%s&client_id=%s&redirect_uri=%s&client_secret=%s";
+        url = String.format(url,accessTokenDTO.getCode(),clientId,redirectUri,clientSecret);
         Request request = new Request.Builder()
-                .url("https://github.com/login/oauth/access_token")
+                .url(url)
                 .post(body)
                 .build();
-        try (Response response = client.newCall(request).execute()){
-            String string = response.body().string();
-            String token = string.split("&")[0].split("=")[1];
-            return token;
+
+        try (Response response = client.newCall(request).execute()) {
+            String string= response.body().string();
+            JSONObject jsonObject = JSON.parseObject(string);
+            return jsonObject.getString("access_token");
         } catch (Exception e) {
-            log.error("getAccessToken error,{}", accessTokenDTO, e);
+            log.error("getAccessToken error,{}",accessTokenDTO,e);
         }
         return null;
     }
 
-    public GithubUser getUser(String accessToken){
+    public GiteeUser getUser(String accessToken) {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .header("Authorization","token "+accessToken)
-                .url("https://api.github.com/user")
+                .url("https://gitee.com/api/v5/user?access_token=" + accessToken)
                 .build();
         try {
             Response response = client.newCall(request).execute();
             String string = response.body().string();
-            GithubUser githubUser = JSON.parseObject(string, GithubUser.class);
-            return githubUser;
-        } catch (IOException e) {
+            GiteeUser giteeUser = JSON.parseObject(string, GiteeUser.class);
+            return giteeUser;
+        } catch (Exception e) {
             log.error("getUser error,{}", accessToken, e);
         }
         return null;

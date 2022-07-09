@@ -1,11 +1,11 @@
-package com.ls.community.dto;
+package com.ls.community.strategy;
 
 import lombok.Data;
 
 @Data
-public class GithubUser {
+public class LoginUserInfo {
     private String name;
     private Long id;
     private String bio;
-    private String avatar_url;
+    private String avatarUrl;
 }

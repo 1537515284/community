@@ -1,15 +1,17 @@
 package com.ls.community.controller;
 
-import com.ls.community.dto.AccessTokenDTO;
-import com.ls.community.dto.GithubUser;
 import com.ls.community.model.User;
 import com.ls.community.provider.GithubProvider;
 import com.ls.community.service.UserService;
+import com.ls.community.strategy.LoginUserInfo;
+import com.ls.community.strategy.UserStrategy;
+import com.ls.community.strategy.UserStrategyFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,44 +25,37 @@ import java.util.UUID;
 public class AuthorizeController {
 
     @Autowired
-    private GithubProvider githubProvider;
+    private UserStrategyFactory userStrategyFactory;
 
     @Autowired
     private UserService userService;
 
-    @Value("${github.client.id}")
-    private String clientId;
-    @Value("${github.client.secret}")
-    private String clientSecret;
-    @Value("${github.redirect-uri}")
-    private String redirectUri;
 
-    @RequestMapping("/callback")
+    @RequestMapping("/callback/{type}")
     public String callback(
+            @PathVariable("type") String type,
             @RequestParam("code") String code,
-            @RequestParam("state") String state,
+            @RequestParam(value = "state",required = false) String state,
             HttpServletResponse response
-    ){
-        AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
-        accessTokenDTO.setClient_id(clientId);
-        accessTokenDTO.setClient_secret(clientSecret);
-        accessTokenDTO.setCode(code);
-        accessTokenDTO.setRedirect_uri(redirectUri);
-        String accessToken = githubProvider.getAccessToken(accessTokenDTO);
-        GithubUser githubUser = githubProvider.getUser(accessToken);
-        if (githubUser != null && githubUser.getId() != null) {
+           ){
+        UserStrategy userStrategy = userStrategyFactory.getStrategy(type);
+        LoginUserInfo loginUserInfo = userStrategy.getUser(code, state);
+        if (loginUserInfo != null && loginUserInfo.getId() != null) {
             User user = new User();
             String token = UUID.randomUUID().toString();
             user.setToken(token);
-            user.setName(githubUser.getName());
-            user.setAccountId(String.valueOf(githubUser.getId()));
-
-            user.setAvatarUrl(githubUser.getAvatar_url());
+            user.setName(loginUserInfo.getName());
+            user.setAccountId(String.valueOf(loginUserInfo.getId()));
+            user.setType(type);
+            user.setAvatarUrl(loginUserInfo.getAvatarUrl());
             userService.createOrUpdate(user);
-           response.addCookie(new Cookie("token",token));
+            Cookie cookie = new Cookie("token",token);
+            cookie.setMaxAge(60*60*24*30*6);
+            cookie.setPath("/");
+            response.addCookie(cookie);
             return "redirect:/";
         }else{
-            log.error("callback get github error,{}", githubUser);
+            log.error("callback get github error,{}", loginUserInfo);
             // 登录失败，重新登录
             return "redirect:/";
         }
