@@ -1,0 +1,31 @@
+server:
+  port: 8887
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/community
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+
+logging:
+  level:
+    root: debug
+    com.ls.community: debug
+
+file:
+  staticAccessPath: /files/**
+  uploadFolder: C:/ls/java/javaIO/uploadFiles/
+
+github:
+  client:
+    id: Iv1.0a2d489403875473
+    secret: a5d557cd9dd15010f8e6a4fe9abb1474189b6770
+  redirect-uri: http://localhost:8887/callback/github
+
+gitee:
+  client:
+    id: 4f5e3daab58e7335f53ed8be42df051d0ff76979f759f62432bf465066127379
+    secret: 1263f607208dbe773ade8b0a50a8c1846392ada4d1e0264a34ff69fa3729553c
+  redirect-uri: http://localhost:8887/callback/gitee
+

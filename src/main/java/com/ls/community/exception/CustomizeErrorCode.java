@@ -12,10 +12,13 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     READ_NOTIFICATION_FAIL(2008, "兄弟你这是读别人的信息呢？"),
     NOTIFICATION_NOT_FOUND(2009, "消息莫非是不翼而飞了？"),
     FILE_UPLOAD_FAIL(2010, "图片上传失败"),
-    INVALID_INPUT(2011, "非法输入"),
-    INVALID_OPERATION(2012, "兄弟，是不是走错房间了？"),
-    USER_DISABLE(2013, "操作被禁用，如有疑问请联系管理员"),
-    RATE_LIMIT(2014, "操作太快了，请稍后重试"),
+    UNSUPPORTED_IMAGE_FORMAT(2011, "不支持的图片格式"),
+    INVALID_INPUT(2012, "非法输入"),
+    INVALID_OPERATION(2013, "兄弟，是不是走错房间了？"),
+    USER_DISABLE(2014, "操作被禁用，如有疑问请联系管理员"),
+    RATE_LIMIT(2015, "操作太快了，请稍后重试"),
+    REQUEST_PARAMS_NOT_VALID(2016,"请求参数错误!")
+
     ;
 
     private String message;

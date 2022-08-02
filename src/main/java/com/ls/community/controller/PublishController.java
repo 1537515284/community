@@ -1,11 +1,13 @@
 package com.ls.community.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.ls.community.cache.TagCache;
 import com.ls.community.dto.QuestionDTO;
 import com.ls.community.mapper.UserMapper;
 import com.ls.community.model.Question;
 import com.ls.community.model.User;
 import com.ls.community.service.QuestionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 @Controller
 public class PublishController {
 
