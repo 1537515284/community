@@ -64,8 +64,8 @@ public class PublishController {
             return "publish";
         }
 
-        if(title.length() > 50){
-            model.addAttribute("error","标题最多50个字符");
+        if(title.length() > 100){
+            model.addAttribute("error","标题最多100个字符");
             return "publish";
         }
 
