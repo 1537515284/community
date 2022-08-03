@@ -27,7 +27,7 @@ github:
 
 gitee:
   client:
-    id: 4f5e3daab58e7335f53ed8be42df051d0ff76979f759f62432bf465066127379
-    secret: 1263f607208dbe773ade8b0a50a8c1846392ada4d1e0264a34ff69fa3729553c
+    id: 4dbb7b7dce4eadfbfd98f958d6530fb800c56c4d81a7133b1fdd1889ee435ef6
+    secret: 20c69206986b36db59e2043a8846c1f7f403d0dbb37605b0bc1de6292cdacb13
   redirect-uri: http://localhost:8887/callback/gitee
 

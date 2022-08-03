@@ -20,7 +20,7 @@ public class GiteeUserStrategy implements UserStrategy{
         String accessToken = giteeProvider.getAccessToken(accessTokenDTO);
         GiteeUser giteeUser = giteeProvider.getUser(accessToken);
         LoginUserInfo loginUserInfo = new LoginUserInfo();
-        loginUserInfo.setAvatarUrl(giteeUser.getAvatarUrl());
+        loginUserInfo.setAvatarUrl(giteeUser.getAvatarUrl()+"!avatar200");
         loginUserInfo.setBio(giteeUser.getBio());
         loginUserInfo.setId(giteeUser.getId());
         loginUserInfo.setName(giteeUser.getName());
