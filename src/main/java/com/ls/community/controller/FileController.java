@@ -55,7 +55,7 @@ public class FileController {
             if (!FileUtils.hasSuffix(originalFilename))
                 throw new CustomizeException(CustomizeErrorCode.UNSUPPORTED_IMAGE_FORMAT);
             String format = sdf.format(new Date());
-            File folder = new File(uploadFolder + format);
+            File folder = new File(uploadFolder + "/"+format);
             if (!folder.isDirectory() && !folder.mkdirs())
                 throw new CustomizeException(CustomizeErrorCode.FILE_UPLOAD_FAIL);
 

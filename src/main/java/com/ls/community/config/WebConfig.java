@@ -31,6 +31,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 灵活一点
         registry.addResourceHandler(staticAccessPath)
-                .addResourceLocations("file:" + uploadFolder);
+                .addResourceLocations("file:" + uploadFolder+"/");
     }
 }
