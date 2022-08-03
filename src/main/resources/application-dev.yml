@@ -9,13 +9,15 @@ spring:
     password: root
 
 logging:
+  file:
+    path: C:/ls/java/javaIO/logs
   level:
     root: debug
     com.ls.community: debug
 
 file:
   staticAccessPath: /files/**
-  uploadFolder: C:/ls/java/javaIO/uploadFiles/
+  uploadFolder: C:/ls/java/javaIO/uploadFiles
 
 github:
   client:
